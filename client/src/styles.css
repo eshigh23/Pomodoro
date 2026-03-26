@@ -1,0 +1,50 @@
+
+body p {
+    margin: 0px;
+    padding: 0px;
+}
+
+.ibm-semibold-24 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 24px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.ibm-bold-32 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 32px;
+    font-weight: 600;
+}
+
+.ibm-bold-36 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 36px;
+    font-weight: 600;
+}
+
+.ibm-bold-40 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 36px;
+    font-weight: 600;
+}
+
+.ibm-bold-64 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 64px;
+    font-weight: 600;
+}
+
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.light-pink-input {
+    background-color: #CD718E;
+    border: 1px solid #FFCADB;
+}
