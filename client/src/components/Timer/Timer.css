@@ -1,0 +1,23 @@
+
+
+.timer {
+    grid-column: span 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 24px;
+}
+
+.timer--underline {
+    height: 7px;
+    width: 75%;
+    background-color: white;
+    margin-bottom: 16px;
+}
+
+.main--subject-text {
+    grid-column: 1;
+}
+.main--select {
+    grid-column: 2;
+}

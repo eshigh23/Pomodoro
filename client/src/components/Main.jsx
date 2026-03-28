@@ -1,88 +1,74 @@
 import './Main.css'
 import { useEffect, useState } from 'react'
 import { GiTomato } from "react-icons/gi";
+import Start from './Start/Start';
+import Timer from './Timer/Timer';
  
 export default function Main() {
 
     const [isStarted, setIsStarted] = useState(false)
-    const [selected, setSelected] = useState('regular')
-    const [count, setCount] = useState(0)
+    const [options, setOptions] = useState({
+        minutes: 60,
+        breaks: 10,
+        totalSessions: 3
+    })
+
+    const [subject, setSubject] = useState("")
+
+
+
 
     useEffect(() => {
-        if (!isStarted) return
+        if (subject === 'newSubject')
+        console.log("new subject hehe")
+    }, [subject])
 
-        const interval = setInterval(() => {
-            setCount(prevCount => prevCount + 1)
-        }, 1000)
-
-        return () => clearInterval(interval)
-    }, [isStarted])
+    useEffect(() => {
+        console.log('options:', options)
+    }, [options])
 
 
-    const formatCount = (count) => {
-        const hours = Math.trunc(count/60/60 % 60)
-        const minutes = Math.trunc(count/60 % 60)
-        const seconds = Math.trunc(count % 60)
-        return `${hours}h ${minutes}m ${seconds}s`
-    }
+
 
 
     return (
         <section className="main">
-            <GiTomato className="main--icon" size={96}/>
-            <p className="main--header-text ibm-bold-40 uppercase">Pomodoro</p>
-            <div className="main--subject-container">
-                <p className="ibm-bold-32">Subject:</p>
-                    <select 
-                        className="
-                            main--select 
-                            ibm-semibold-24 
-                            main--subject-text
-                            light-pink-input"
-                    >
-                        <option value="none">
-                            None
-                        </option>
-                         <option value="none">
-                            + Add subject
-                        </option>
-                    </select>
-            </div>
-
-            <div className="main--input-options ibm-bold-32">
-                <div className="main--input-option">
-                    <div className="main--option-box light-pink-input">
-                        <p>60</p>
-                    </div>
-                    <p>minute sessions</p>
-                </div>
-
-                <div className="main--input-option">
-                    <div className="main--option-box light-pink-input">
-                        <p>10</p>
-                    </div>
-                    <p>minute breaks</p>
-                </div>
-
-                <div className="main--input-option">
-                    <div className="main--option-box light-pink-input">
-                        <p>3</p>
-                    </div>
-                    <p>total sessions</p>
-                </div>
+            {/* section 1: header */}
+            <div className="main--header">
+                <GiTomato className="main--icon" size={96}/>
+                <p className="ibm-bold-40 uppercase">Pomodoro</p>
             </div>
 
 
-            {/* <div className="main--counter-container">
-                <p className="ibm-bold-64 main--counter">{formatCount(count)}</p>
-                <div className="main--counter-underline"/>
-            </div> */}
-            <button 
-                className="clickable main--start-button ibm-bold-36"
-                onClick={()=> setIsStarted(prev => !prev)}
-            >
-                    {!isStarted ? 'Start' : 'Pause'}
-            </button>
+            {/* section 2: body */}
+            <div className="main--body">
+                { !isStarted ? (
+                    <Start
+                        options={options}
+                        setOptions={setOptions}
+                        subject={subject}
+                        setSubject={setSubject}
+                    />
+                ) : (
+                    <Timer
+                        options={options}
+                        subject={subject}
+                        setSubject={setSubject}
+                    />
+                )}
+            </div>
+
+
+            {/* section 3: start button */}
+            <div className="main--start-section">
+                <button 
+                    className="clickable button ibm-bold-36"
+                    onClick={()=> setIsStarted(prev => !prev)}
+                >
+                        {!isStarted ? 'Start' : 'Pause'}
+                </button>
+            </div>
+
         </section>
     )
 
