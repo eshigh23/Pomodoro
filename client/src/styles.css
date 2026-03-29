@@ -11,10 +11,26 @@ body p {
     text-transform: capitalize;
 }
 
+/* navbar links */
+.ibm-medium-24 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 24px;
+    font-weight: 400;
+    text-transform: uppercase;
+
+}
+
 .ibm-semibold-24 {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 24px;
     font-weight: 500;
+    text-transform: capitalize;
+}
+
+.ibm-bold-24 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 24px;
+    font-weight: 600;
     text-transform: capitalize;
 }
 
@@ -32,7 +48,7 @@ body p {
 
 .ibm-bold-40 {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 36px;
+    font-size: 40px;
     font-weight: 600;
 }
 
@@ -54,4 +70,8 @@ body p {
 .light-pink-input {
     background-color: #CD718E;
     border: 1px solid #FFCADB;
+}
+
+.grey {
+
 }

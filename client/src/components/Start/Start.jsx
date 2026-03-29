@@ -1,7 +1,21 @@
 import './Start.css'
+import { useEffect, useState } from 'react'
 
 
 export default function Start({ options, setOptions, subject, setSubject}) {
+
+    const [animate, setAnimate] = useState(false);
+
+    
+
+    useEffect(() => {
+        // The 10ms delay ensures the browser registers the 100% 
+        // position before moving to 0.
+        const timer = setTimeout(() => setAnimate(true), 10);
+        return () => clearTimeout(timer);
+    }, []);
+
+
 
      {/* section 2: body */}
      return (
@@ -45,7 +59,7 @@ export default function Start({ options, setOptions, subject, setSubject}) {
             />
             <p className="main--option-text">minute sessions</p>
         </div>
-        
+
 
         <div className="main--option-wrapper ibm-bold-32">
             <input 

@@ -2,15 +2,30 @@ import './Timer.css'
 
 import { useEffect, useState } from 'react'
 
-export default function Timer({ options, subject, setSubject }) {
+export default function Timer({ options, subject, setSubject, isRunning, setIsRunning,
+    currentSession, setCurrentSession, sessionText, setSessionText
+ }) {
 
-    const [isRunning, setIsRunning] = useState(true)
+
     const [isSession, setIsSession] = useState(true)
-    const [currentSession, setCurrentSession] = useState(1)
+    const [animate, setAnimate] = useState(false);
+
+
+    useEffect(() => {
+        // The 10ms delay ensures the browser registers the 100% 
+        // position before moving to 0.
+        const timer = setTimeout(() => setAnimate(true), 10);
+        return () => clearTimeout(timer);
+    }, []);
 
 
     // count in seconds
-    const [count, setCount] = useState(options.minutes * 60)
+    // const [count, setCount] = useState(options.minutes * 60)
+
+    const [timer, setTimer] = useState({
+        timer: options.minutes * 60,    // seconds
+        prevTime: Date.now()
+    })
 
 
     // decrement timer each second
@@ -18,17 +33,34 @@ export default function Timer({ options, subject, setSubject }) {
         if (!isRunning) return
 
         const interval = setInterval(() => {
-            setCount(prevCount => prevCount - 1)
-        }, 100)
+
+            const now = Date.now()
+
+            setTimer(prev => {
+                const timeElapsed = now - prev.prevTime
+                const secondsElapsed = timeElapsed / 1000
+
+                return {
+                    timer: prev.timer - secondsElapsed,
+                    prevTime: now
+                }
+            })
+        }, 1000)
 
         return () => clearInterval(interval)
     }, [isRunning])
 
-    useEffect(() => {
-        if (count !== 0) return
 
-        handleSessionChange()
-    }, [count])
+
+    useEffect(() => {
+        console.log("timer:", timer)
+    }, [timer])
+
+    // useEffect(() => {
+    //     if (count !== 0) return
+
+    //     handleSessionChange()
+    // }, [count])
 
 
 
@@ -37,17 +69,21 @@ export default function Timer({ options, subject, setSubject }) {
         if (isSession) {    // if currently in session, go to break
             setIsSession(false) 
             setCount(options.breaks * 60)   // set count to break time
+            setSessionText(`Break #${currentSession}`)
         }
 
         else {  // end study or continue to next session
             if (currentSession < options.totalSessions) {   // cntu
+                const nextSession = currentSession + 1
+
                 setIsSession(true)
-                setCurrentSession(prev => prev + 1)
+                setCurrentSession(nextSession)
+                setSessionText(`Session #${nextSession}`)
                 setCount(options.minutes * 60)
             }
             else {  // end study
                 setIsRunning(false)
-                console.log('study time is over')
+                setSessionText('Study over!')
             }
         }
     }
@@ -63,7 +99,7 @@ export default function Timer({ options, subject, setSubject }) {
 
     
     return(
-        <>
+        <div className={`slide-wrapper ${animate ? 'active' : ''}`}>
             <p className="main--subject-text ibm-bold-32">Subject:</p>
 
             <select 
@@ -90,15 +126,10 @@ export default function Timer({ options, subject, setSubject }) {
             </select>
 
             <div className="timer">
-                <p className="ibm-bold-64">{formatCount(count)}</p>
+                <p className="ibm-bold-64">{formatCount(timer.timer)}</p>
                 <div className="timer--underline"/>
-                { isRunning ? (
-                    <p className="ibm-bold-20">{ isSession ? 'Session' : 'Break'} #{currentSession}</p>
-                ):(
-                    <p className="ibm-bold-20">Study over!</p>
-                )}
-                
+                <p className="ibm-bold-20">{sessionText}</p>
             </div>
-        </>
+        </div>
     )
 }
