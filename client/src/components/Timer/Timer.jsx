@@ -1,14 +1,41 @@
 import './Timer.css'
+import Overlay from '../Overlay/Overlay';
 
 import { useEffect, useState } from 'react'
 
-export default function Timer({ options, subject, setSubject, isRunning, setIsRunning,
-    currentSession, setCurrentSession, sessionText, setSessionText
+export default function Timer({ options, isRunning, setIsRunning,
+    currentSession, setCurrentSession, sessionText, setSessionText, timer, setTimer
  }) {
 
 
     const [isSession, setIsSession] = useState(true)
     const [animate, setAnimate] = useState(false);
+
+
+    // any point to defining this? yes, the timer should be defined outside.
+    useEffect(() => {
+        setTimer({
+            timer: options.minutes * 60,    // total study time in seconds
+            breakTimer: options.breaks * 60,
+            prevTime: Date.now() 
+        })
+    }, [])
+
+
+    useEffect(() => {
+        console.log('currentSession:', currentSession)
+    }, [currentSession])
+
+
+    useEffect(() => {
+        console.log('timer!:', timer.timer)
+    }, [timer.timer])
+
+
+    useEffect(() => {
+        console.log('break timer!:', timer.breakTimer)
+    }, [timer.breakTimer])
+
 
 
     useEffect(() => {
@@ -19,18 +46,23 @@ export default function Timer({ options, subject, setSubject, isRunning, setIsRu
     }, []);
 
 
-    // count in seconds
-    // const [count, setCount] = useState(options.minutes * 60)
+    // if timer is resumed after manual pause, set prevTime to right now
+    useEffect(() => {
+        if (isRunning) {
+            setTimer(prev => ({
+                ...prev,
+                prevTime: Date.now()
+            }))
+        }
+    }, [isRunning])
 
-    const [timer, setTimer] = useState({
-        timer: options.minutes * 60,    // seconds
-        prevTime: Date.now()
-    })
 
-
-    // decrement timer each second
+    // decrement timer each second by comparing previously stored Date obj to new Date obj
     useEffect(() => {
         if (!isRunning) return
+
+        // after manual pause, make sure prevTime starts from current time
+        // setTimer(prev => ({...prev, prevTime: Date.now()}))
 
         const interval = setInterval(() => {
 
@@ -41,50 +73,61 @@ export default function Timer({ options, subject, setSubject, isRunning, setIsRu
                 const secondsElapsed = timeElapsed / 1000
 
                 return {
-                    timer: prev.timer - secondsElapsed,
+                    ...prev,
+                    ...(isSession && { timer: prev.timer - secondsElapsed }),
+                    ...(!isSession && { breakTimer: prev.breakTimer - secondsElapsed}),
                     prevTime: now
                 }
             })
-        }, 1000)
+        }, 100)
 
         return () => clearInterval(interval)
-    }, [isRunning])
+    }, [isRunning, isSession])
 
 
-
+    // if session timer is 0 or less, start break
     useEffect(() => {
-        console.log("timer:", timer)
-    }, [timer])
+        if (!timer || Math.round(timer.timer) > 0) return
+        handleStartBreak()
 
-    // useEffect(() => {
-    //     if (count !== 0) return
-
-    //     handleSessionChange()
-    // }, [count])
+    }, [timer?.timer])
 
 
+    // if break timer is 0 or less, start session
+    useEffect(() => {
+        if (!timer || Math.round(timer.breakTimer) > 0) return
+        handleStartSession()
+
+    }, [timer.breakTimer])
 
 
-    const handleSessionChange = () => {
-        if (isSession) {    // if currently in session, go to break
-            setIsSession(false) 
-            setCount(options.breaks * 60)   // set count to break time
-            setSessionText(`Break #${currentSession}`)
+    // start or restart break
+    const handleStartBreak = () => {
+        setIsSession(false)
+        setSessionText(`Break #${currentSession}`)
+    }
+
+
+    // start or restart session, otherwise end timer
+    const handleStartSession = () => {
+
+        if (currentSession < options.totalSessions) {   // if current session <= num total sessions, cntu
+            setIsSession(true)
+            
+            const newCurrentSession = currentSession + 1
+            setCurrentSession(newCurrentSession)
+            setSessionText(`Session #${newCurrentSession}`)
+
+            // reset the timer
+            setTimer(prev => ({
+                ...prev,
+                timer: options.minutes * 60,
+                breakTimer: options.breaks * 60, 
+            }))
         }
-
-        else {  // end study or continue to next session
-            if (currentSession < options.totalSessions) {   // cntu
-                const nextSession = currentSession + 1
-
-                setIsSession(true)
-                setCurrentSession(nextSession)
-                setSessionText(`Session #${nextSession}`)
-                setCount(options.minutes * 60)
-            }
-            else {  // end study
-                setIsRunning(false)
-                setSessionText('Study over!')
-            }
+        else {  // end study
+            setIsRunning(false)
+            setSessionText('Study over!')
         }
     }
 
@@ -96,40 +139,16 @@ export default function Timer({ options, subject, setSubject, isRunning, setIsRu
         return `${hours}h ${minutes}m ${seconds}s`
     }
 
-
     
     return(
+        <>
         <div className={`slide-wrapper ${animate ? 'active' : ''}`}>
-            <p className="main--subject-text ibm-bold-32">Subject:</p>
-
-            <select 
-                className="
-                    main--select 
-                    ibm-semibold-24 
-                    main--subject-text
-                    light-pink-input
-                "
-                value={subject}
-                onChange={(e) => setSubject(e.target.value) }
-            >
-                <option value="Coding">
-                    Coding
-                </option>
-
-                <option value=''>
-                    None
-                </option>
-
-                <option value={"newSubject"}>
-                    + Add subject
-                </option>
-            </select>
-
             <div className="timer">
-                <p className="ibm-bold-64">{formatCount(timer.timer)}</p>
+                <p className="ibm-bold-64">{isSession ? formatCount(timer.timer) : formatCount(timer.breakTimer)}</p>
                 <div className="timer--underline"/>
                 <p className="ibm-bold-20">{sessionText}</p>
             </div>
         </div>
+        </>
     )
 }

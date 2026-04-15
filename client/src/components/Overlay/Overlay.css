@@ -1,0 +1,48 @@
+.overlay {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        rgba(63, 63, 63, 0.7),
+        rgba(1, 1, 1, 0.7)
+    );
+    z-index: 10;
+}
+
+.overlay--new-subject {
+    background-color: #A73C5E;
+    border: 1px solid #FFCADB;
+    min-width: 500px;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding-block: 32px;
+}
+
+.overlay--x {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    cursor: pointer;
+}
+
+.subject-input {
+    padding: 8px 24px;
+    text-align: center;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    color: #373737;
+}
+
+.overlay--button {
+    margin-top: 16px;
+    padding: 4px 16px;
+}

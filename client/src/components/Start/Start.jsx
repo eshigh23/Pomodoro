@@ -2,16 +2,14 @@ import './Start.css'
 import { useEffect, useState } from 'react'
 
 
-export default function Start({ options, setOptions, subject, setSubject}) {
+export default function Start({ options, setOptions }) {
 
     const [animate, setAnimate] = useState(false);
-
-    
 
     useEffect(() => {
         // The 10ms delay ensures the browser registers the 100% 
         // position before moving to 0.
-        const timer = setTimeout(() => setAnimate(true), 10);
+        const timer = setTimeout(() => setAnimate(true), 100);
         return () => clearTimeout(timer);
     }, []);
 
@@ -20,31 +18,6 @@ export default function Start({ options, setOptions, subject, setSubject}) {
      {/* section 2: body */}
      return (
         <>
-        {/* subject text and select */}
-        <p className="main--subject-text ibm-bold-32">Subject:</p>
-        <select 
-            className="
-                main--select 
-                ibm-semibold-24 
-                main--subject-text
-                light-pink-input
-            "
-            value={subject}
-            onChange={(e) => setSubject(e.target.value)}
-        >
-            <option value=''>
-                None
-            </option>
-            <option value="Coding">
-                Coding
-            </option>
-
-            <option value={"newSubject"}>
-                + Add subject
-            </option>
-        </select>
-
-
         {/* options */}
         <div className="main--option-wrapper ibm-bold-32">
             <input 

@@ -1,0 +1,103 @@
+/* 
+auth container is a centered white container, while
+auth content container is a centered flex container with a percentage width
+@todo-- we could probably the same by making auth container flex with an inline padding
+*/
+
+.auth--container {
+    margin: 0 auto;
+    margin-top: 10vh;
+    max-width: 600px;
+    background-color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    padding-block: 32px;
+    box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.1);
+}
+
+.auth--content-container {
+    /* border: 1px solid red; */
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    min-width: 300px;
+    max-width: 400px;
+    width: 80%;
+}
+
+.auth--option-container {
+    width: 100%;
+    /* border: 1px solid blue; */
+    margin-bottom: 16px;
+}
+
+.auth--option-container.signup {
+    text-align: end;
+}
+
+.auth--options {
+    width: 100%;
+    /* border: 1px solid green; */
+    display: flex;
+    justify-content: space-between;
+    color: #373737;
+    cursor: pointer;
+    /* padding-block: 16px; */
+}
+
+.auth--underline {
+    height: 5px;
+    width: 100%;
+    background-color: #CD718E;
+    border-radius: 5px;
+    opacity: 0;
+}
+
+.auth--underline.active {
+    opacity: 1;
+}
+
+.auth--form {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+
+    align-items: center;
+    color: #373737;
+
+    gap: 8px;
+}
+
+.auth--input-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 4px;
+    /* border:1px solid red; */
+}
+
+.auth--input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 12px 24px;
+    text-align: center;
+    background-color: #f9f9f9;
+    border: 1px solid #CD718E;
+    border-radius: 5px;
+    color: #373737;
+}
+
+.auth--google-divider {
+    height: 1px;
+    width: 100%;
+    background-color: lightgray;
+}
+
+.auth--forgot-credentials {
+    padding-top: 16px;
+    color: #313131;
+    text-decoration: underline;
+    cursor: pointer;
+}

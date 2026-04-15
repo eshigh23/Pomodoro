@@ -3,14 +3,12 @@
 .main {
     position: relative;
     overflow: hidden;
-    padding-top: 10vh;
+    padding-top: 5vh;
     display: grid;
-    width: fit-content; /* This is the "magic" property! */
-    margin: 0 auto;     /* This will now work perfectly */
+    width: fit-content; 
+    margin: 0 auto;     
     grid-template-columns: 1fr;
-    /* border: 5px solid blue; */
     box-sizing: border-box;
-    /* max-width: 500px; */
     color: white;
     margin: 0 auto;
 
@@ -28,7 +26,6 @@
     flex-direction: column;
     align-items: center;
     margin-bottom: 40px;
-    /* border: 1px solid green; */
 }
 
 .main--icon {
@@ -39,7 +36,6 @@
 .main--subject-text {
     grid-column: 1;
     align-self: center;
-
 }
 
 
@@ -64,7 +60,7 @@
     /* Animation start state */
     transform: translateX(100%);
     opacity: 0;
-    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out;
     
     /* Performance boost for animations */
     will-change: transform, opacity; 
