@@ -1,6 +1,7 @@
 import './Main.css'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { GiTomato } from "react-icons/gi";
+import SubjectScreen from './SubjectScreen/SubjectScreen';
 import EndScreen from './EndScreen/EndScreen';
 import Start from './Start/Start';
 import Timer from './Timer/Timer';
@@ -10,18 +11,28 @@ import { Pause, Play } from "lucide-react"
 import { useContext } from 'react'
 import { UserContext } from '../context/userContext'
 
+import { createStudySessionApi } from '../api/studySessionApi';
+
+import Audio from './Audio/Audio';
+
  
 export default function Main() {
 
     const { user, setUser } = useContext(UserContext)
-    console.log("user in context:", user)
+    // console.log("user in context:", user)
 
-    const [isStarted, setIsStarted] = useState(false)
-    const [isRunning, setIsRunning] = useState(false)
-    const [isEnded, setIsEnded] = useState(false)
-    const [sessionText, setSessionText] = useState('')
+
+    const [isRunning, setIsRunning] = useState(false)   // timer running state
+    const [screen, setScreen] = useState("start")
+
+    // session state
     const [currentSession, setCurrentSession] = useState(1)
+    const [sessionText, setSessionText] = useState(`Session #${currentSession}`)
+    const [sessions, setSessions] = useState([])
+
+
     const [isOverlay, setIsOverlay] = useState(false)
+
 
     const [options, setOptions] = useState({
         minutes: 60,
@@ -31,14 +42,40 @@ export default function Main() {
 
     const [timer, setTimer] = useState('')
 
-
     const [endStats, setEndStats] = useState()
 
-    const [subject, setSubject] = useState("General")
+
+    // initialize sessions state
+    useEffect(() => {
+        setSessions(
+            Array.from({ length: options.totalSessions }, () => (
+                'General'
+            ))
+        )
+    }, [options])
+
+
+    useEffect(() => {
+        console.log("screen:", screen)
+    }, [screen])
+
+ 
+    useEffect(() => {
+        console.log('sessions on mount:', sessions)
+    }, [sessions])
+
+
+    const sortedSubjects = useMemo(() => {
+        return user?.subjects
+            ? [...user.subjects].sort((a, b) => a.localeCompare(b))
+            : []
+    }, [user?.subjects])
+
 
     useEffect(() => {
         console.log("options:", options)
     }, [options])
+
 
 
     const calculateEndStats = () => {
@@ -97,6 +134,8 @@ export default function Main() {
 
     return (
         <section className="main">
+
+            <Audio />
             
             { isOverlay && (
                 <Overlay 
@@ -114,107 +153,90 @@ export default function Main() {
 
             {/* section 2: body */}
             <div className="main--body">
-                <p className="main--subject-text ibm-bold-32">Subject:</p>
-                <select 
-                    className="
-                        main--select 
-                        ibm-semibold-24 
-                        main--subject-text
-                        light-pink-input
-                    "
-                    value={subject}
-                    onChange={(e) => {
-                        if (e.target.value === 'newSubject') {
-                            setIsOverlay(true)
-                        }
-                        else {
-                            setSubject(e.target.value) 
-                        }
-                    }}
-                >
-                    <option value="Coding">
-                        Coding
-                    </option>
-
-                    <option value=''>
-                        None
-                    </option>
-
-                    <option value="newSubject">
-                        + Add subject
-                    </option>
-                </select>
-
-                { !isStarted ? (
+                { screen === 'start' && (
                     <Start
                         options={options}
                         setOptions={setOptions}
                     />
-                ) : (
-                    !isEnded ? (
-                        <Timer
-                            options={options}
-                            isRunning={isRunning}
-                            setIsRunning={setIsRunning}
-                            currentSession={currentSession}
-                            setCurrentSession={setCurrentSession}
-                            sessionText={sessionText}
-                            setSessionText={setSessionText}
-                            timer={timer}
-                            setTimer={setTimer}
-                        />
-                    ) : (
-                        <EndScreen 
-                            subject={subject}
-                            endStats={endStats}
-                        />
-                    )
+                )}
+
+                { screen === 'subject' && (
+                    <SubjectScreen 
+                        sessions={sessions}
+                        setSessions={setSessions}
+                        sortedSubjects={sortedSubjects}
+                        setIsOverlay={setIsOverlay}
+                    />
+                )}
+
+                { screen === 'timer' && (
+                    <Timer
+                        options={options}
+                        isRunning={isRunning}
+                        setIsRunning={setIsRunning}
+                        currentSession={currentSession}
+                        setCurrentSession={setCurrentSession}
+                        sessionText={sessionText}
+                        setSessionText={setSessionText}
+                        timer={timer}
+                        setTimer={setTimer}
+                        subject={sessions[currentSession - 1]}
+                        startedAt={Date.now()}
+                    />
+                )}
+
+                { screen === 'end' && (
+                    <EndScreen 
+                        subject={sessions[currentSession - 1]}
+                        endStats={endStats}
+                    />
                 )}
             </div>
 
 
-            {/* section 3: start button */}
+            {/* section 3: play & pause, start & button */}
             <div className="main--start-section">
 
                 {/* play and pause button */}
-                { isStarted && (
-                    <button 
-                        className="main--play-pause-button"
-                        onClick={() => setIsRunning(prev => !prev)}
-                    >
-                        { isRunning ? (
-                            <Pause 
-                                size={32} 
-                                color="#373737"
-                                onClick={() => setSessionText('Session paused')}
-                            />
-                        ) : (
-                            <Play 
-                                size={32} 
-                                color="#373737"
-                                onClick={() => setSessionText(`Session #${currentSession}`)}
-                            />
-                        )}
-                    </button>
-                )}
+                <button 
+                    className="main--play-pause-button"
+                    onClick={() => setIsRunning(prev => !prev)}
+                >
+                    { isRunning ? (
+                        <Pause 
+                            size={32} 
+                            color="#373737"
+                            onClick={() => setSessionText('Session paused')}
+                        />
+                    ) : (
+                        <Play 
+                            size={32} 
+                            color="#373737"
+                            onClick={() => setSessionText(`Session #${currentSession}`)}
+                        />
+                    )}
+                </button>
+
 
                 {/* start and end button */}
                 <button 
                     className="clickable start-button ibm-bold-36"
                     onClick={()=> {
-                        if (!isStarted) {
-                            setIsStarted(prev => !prev)
+                        if (screen === 'start') {
+                            setScreen('subject')
+                        }
+                        else if (screen === 'subject') {
                             setIsRunning(true)
-                            setSessionText(`Session #${currentSession}`)
-                        }
-                        else {
+                            setScreen('timer')
+                        } else {
                             calculateEndStats()
-                            setIsEnded(true)
+                            setScreen('end')
                         }
-
                     }}
                 >
-                        {!isStarted ? 'Start' : 'End'}
+                        {screen === 'start' && 'Next'}
+                        {screen === 'subject' && 'Start'}
+                        {screen === 'timer' && 'End'}
                 </button>
             </div>
 

@@ -8,6 +8,7 @@ export const fetchUserForAuthApi = async () => {
         const response = await axios.get(`${BASE_URL}/fetchUserForAuth`,
             { withCredentials: true }
         )
+        console.log('response:', response)
         return response.data // returns user info in req.body if defined, otherwise undefined
 
     } catch (e) {

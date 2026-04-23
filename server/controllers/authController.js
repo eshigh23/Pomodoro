@@ -66,9 +66,9 @@ const sendEmail = async (email, link) => {
 
 }
 
-const createUserObjectForAuth = (userId, username) => {
+const createUserObjectForAuth = (userId, username, subjects) => {
     return { 
-        user: { _id: userId, username: username}
+        user: { _id: userId, username: username, subjects: subjects || [] }
     }
 }
 
@@ -84,10 +84,11 @@ exports.fetchUserForAuth = async (req, res) => {
         // @todo-- move into requireAuth
         const user = await User.findById(reqUser._id)
         if (!user) {
+            console.log('no user')
             return res.status(200).send()
         }
 
-        const authUser = createUserObjectForAuth(user._id, user.username)
+        const authUser = createUserObjectForAuth(user._id, user.username, user.subjects)
 
         return res.status(200).json(authUser)
 
@@ -219,7 +220,7 @@ exports.handleGoogleLogin = async (req, res) => {
             secure: false // true in production (https)
         });
 
-        let authUser = createUserObjectForAuth(user._id, user.username)
+        const authUser = createUserObjectForAuth(user._id, user.username, user.subjects)
         return res.status(200).json(authUser)
 
   } catch (err) {
@@ -259,6 +260,8 @@ exports.registerUser = async (req, res) => {
             email: email
         })
 
+        console.log("user in backend:", user)
+
 
         // create and store jwt token in cookie
         let token = createToken(user._id, user.username)
@@ -269,7 +272,7 @@ exports.registerUser = async (req, res) => {
             sameSite: "lax"
         })
 
-        const authUser = createUserObjectForAuth(user._id, user.username)
+        const authUser = createUserObjectForAuth(user._id, user.username, user.subjects)
 
         return res.status(201).json(authUser)
 
@@ -303,7 +306,7 @@ exports.loginUser = async (req, res) => {
             sameSite: "lax"
         })
 
-        const authUser = createUserObjectForAuth(user._id, user.username)
+        const authUser = createUserObjectForAuth(user._id, user.username, user.subjects)
 
         return res.status(200).json(authUser)
 

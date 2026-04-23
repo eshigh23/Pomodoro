@@ -1,0 +1,76 @@
+.audio-button {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 100px;
+    right: 100px;
+    background-color: #D2B2BC;
+    border-radius: 32px;
+    border: 3px solid white;
+    width: 52px;
+    align-items: center;
+    box-sizing: border-box;
+    /* padding-block: 8px; */
+    /* padding-block: 16px; */
+
+    overflow: hidden; /* 👈 REQUIRED */
+    transition: height 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.audio-button.open {
+    height: 315px; /* enough to fit all icons */
+}
+
+.audio-button.closed {
+    height: 52px; /* perfect circle (same as width) */
+}
+
+
+/* .audio-button--divider-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+}
+
+.audio-button--divider {
+    border-bottom: 2px solid #EBDDE2;
+} */
+
+.audio--icons-wrapper {
+    position: relative;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center; 
+    /* border: 1px solid blue; */
+    padding-block: 8px;
+
+    /* border: 1px solid red; */
+}
+
+/* give each icon a fixed row height of 32px */
+.audio--icons-wrapper > *:not(.icon-selector) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    /* border: 1px solid red; */
+}
+
+
+.audio--icon {
+    margin-bottom: 32px;
+}
+
+.icon-selector {
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    background-color: #EBDDE2;
+    border: 3px solid white;
+    z-index: -1;
+    border-radius: 50%;
+
+    transition: transform 0.15s ease; 
+}

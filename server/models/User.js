@@ -6,6 +6,10 @@ const UserSchema = new Schema({
     password: { type: String,  selected: false },
     email: { type: String, unique: true, required: true, selected: false },
     googleId: { type: String, unique: true, sparse: true, selected: false },
+    subjects: {
+        type: [String],
+        default: []
+    },
     resetPasswordToken: String,
     resetPasswordExpires: Date,
 }, { timestamps: true })

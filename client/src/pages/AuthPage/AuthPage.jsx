@@ -71,6 +71,7 @@ export default function AuthPage() {
 
         try {
             const responseData = await registerUserApi(userInfo)
+            console.log(responseData)
 
             setUser(responseData.authUser)
             navigate('/')

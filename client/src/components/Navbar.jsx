@@ -29,7 +29,7 @@ export default function Navbar() {
     }
 
     return (
-        <section className="navbar">
+        <nav className="navbar">
             <GiTomato color="white" size={40}/>
             <p className="ibm-medium-24 clickable">Pomodoro Timer</p>
 
@@ -52,6 +52,6 @@ export default function Navbar() {
 
             {/* <p className="ibm-medium-24">Stats</p>
             <p className="ibm-medium-24">Rewards</p> */}
-        </section>
+        </nav>
     )
 }

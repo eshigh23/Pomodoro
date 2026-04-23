@@ -1,9 +1,14 @@
 import './Overlay.css'
 import { useEffect, useState } from 'react'
 import { X } from 'lucide-react'
+import { addSubjectsApi } from '../../api/userApi'
+import { useContext } from 'react'
+import { UserContext } from '../../context/userContext'
 
 
 export default function Overlay({ setIsOverlay }) {
+
+    const { setUser } = useContext(UserContext)
 
     const [newSubjects, setNewSubjects] = useState([''])
 
@@ -13,6 +18,21 @@ export default function Overlay({ setIsOverlay }) {
 
     const handleCloseOverlay = () => {
         setIsOverlay(false)
+    }
+
+    const handleAddSubjects = async () => {
+        try {
+            const responseData = await addSubjectsApi(newSubjects)
+            console.log('responseData in subjects:', responseData)
+
+            setUser(prev => ({
+                ...prev,
+                subjects: responseData.updatedSubjects
+            }))
+
+        } catch (e) {
+            console.error(e)
+        }
     }
 
     return (
@@ -47,7 +67,9 @@ export default function Overlay({ setIsOverlay }) {
                 >
                     + add another subject
                 </p>
-                <button className="overlay--button ibm-bold-32 light-pink-button">Confirm</button>
+                <button
+                    onClick={handleAddSubjects}
+                    className="overlay--button ibm-bold-32 light-pink-button">Confirm</button>
             </div>
         </div>
     )

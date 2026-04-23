@@ -8,6 +8,8 @@ const cookieParser = require('cookie-parser')
 require('dotenv').config()
 
 const authRoutes = require('./routes/authRoutes')
+const userRoutes = require('./routes/userRoutes')
+const studySessionRoutes = require('./routes/studySessionRoutes')
 
 
 const corsOptions = {
@@ -24,11 +26,21 @@ app.use(cookieParser())
 
 // routes
 app.use('/auth', authRoutes)
+app.use('/user', userRoutes)
+app.use('/studySession', studySessionRoutes)
 
 app.get('/api/data', (req, res) => {
   res.json({ message: "Hello from Node!" });
 });
 
 mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("MongoDB connected");
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    app.listen(PORT, () =>
+      console.log(`Server running on port ${PORT}`)
+    );
+  })
+  .catch(err => {
+    console.error("MongoDB connection error:", err);
+  });

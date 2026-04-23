@@ -1,16 +1,11 @@
 
-body p {
-    margin: 0px;
-    padding: 0px;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-body {
-    box-sizing: border-box;
-}
-
-body div {
-    box-sizing: border-box;
-}
 
 .ibm-semibold-14 {
     font-family: 'IBM Plex Mono', monospace;

@@ -1,5 +1,39 @@
-.background {
-  background-color: #A73C5E;
-  height: 100vh;
+/* .app-viewport {
+  min-height: 100vh;
+  width: 100vw;
+} */
+
+.app-wrapper {
+  display: flex;
+  border: 5px solid red;
+  box-sizing: border-box;
+  flex-direction: column;
+  min-height: 100vh;
   width: 100%;
+  /* overflow: hidden; */
+  overflow-y: auto;
+}
+
+.content-grower {
+  flex-grow: 1; 
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* This is where the scrollbar happens if Main gets too long */
+  border: 4px solid purple;
+}
+
+nav {
+  flex-shrink: 0;
+}
+
+.default-background {
+  background-color: #A73C5E;
+}
+
+.fireplace {
+    background:
+        linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+        url('/backgrounds/fireplace.jpg');
+    background-size: cover;
+    background-position: center;
 }

@@ -2,26 +2,32 @@
 
 .main {
     position: relative;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    border: 3px solid blue;
     padding-top: 5vh;
-    display: grid;
-    width: fit-content; 
-    margin: 0 auto;     
-    grid-template-columns: 1fr;
+    /* min-height: 100%; */
+    flex: 1 0 auto;
+    width: 100%;
     box-sizing: border-box;
+    /* ... rest of your code */
+    /* overflow-y: auto; */
     color: white;
-    margin: 0 auto;
 
-    grid-template-areas:
-        "header"
-        "body"
-        "startbutton";
+}
+
+.fireplace-background {
+    background:
+        linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+        url('/backgrounds/fireplace.jpg');
+    background-size: cover;
+    background-position: center;
 }
 
 
 /* SECTION 1: HEADER */
 .main--header {
-    grid-area: header;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -32,20 +38,16 @@
     margin-bottom: 8px;
 }
 
-/* subject and subject select  */
-.main--subject-text {
-    grid-column: 1;
-    align-self: center;
-}
 
 
 /* SECTION 2: BODY */
 .main--body {
-    grid-area: body;
+
     display: grid;
     grid-template-columns: 1fr 2fr;
     column-gap: 8px;
     row-gap: 16px;
+    border: 1px solid black;
 
     overflow-x: hidden; 
     position: relative;
