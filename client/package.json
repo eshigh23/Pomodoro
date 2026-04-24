@@ -12,6 +12,7 @@
   "dependencies": {
     "@lucide/lab": "^0.1.2",
     "@react-oauth/google": "^0.13.5",
+    "axios": "^1.15.2",
     "lucide-react": "^1.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

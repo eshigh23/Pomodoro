@@ -6,8 +6,18 @@
     align-items: center;
     background: linear-gradient(#E697B0, #CD718E);
     width: 100%;
-    height: 70px;
+    height: 60px;
     padding-inline: 16px;
     color: white;
+}
+
+.navbar.dark-theme {
+    background: rgba(0, 0, 0, 0.6); /* adjust 0.5 → darker/lighter */
+}
+
+.navbar__items-container {
+    margin-right: 3vw;
+    display: flex;
+    gap:  5vw;
 }
 

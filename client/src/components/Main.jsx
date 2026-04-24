@@ -6,7 +6,7 @@ import EndScreen from './EndScreen/EndScreen';
 import Start from './Start/Start';
 import Timer from './Timer/Timer';
 import Overlay from './Overlay/Overlay';
-import { Pause, Play } from "lucide-react"
+import { ArrowBigLeft, Pause, Play } from "lucide-react"
 
 import { useContext } from 'react'
 import { UserContext } from '../context/userContext'
@@ -18,7 +18,7 @@ import Audio from './Audio/Audio';
  
 export default function Main() {
 
-    const { user, setUser } = useContext(UserContext)
+    const { user, setUser, theme } = useContext(UserContext)
     // console.log("user in context:", user)
 
 
@@ -145,7 +145,7 @@ export default function Main() {
             {/* section 1: header */}
             <div className="main--header">
                 {/* <p className="ibm-bold-24">YET ANOTHER</p> */}
-                <h3>Welcome, {user?.username}</h3>
+                {/* <h3>Welcome, {user?.username}</h3> */}
                 <GiTomato className="main--icon" size={96}/>
                 <p className="ibm-bold-40 uppercase">Pomodoro</p>
             </div>
@@ -198,29 +198,45 @@ export default function Main() {
             <div className="main--start-section">
 
                 {/* play and pause button */}
-                <button 
-                    className="main--play-pause-button"
-                    onClick={() => setIsRunning(prev => !prev)}
-                >
-                    { isRunning ? (
-                        <Pause 
-                            size={32} 
-                            color="#373737"
-                            onClick={() => setSessionText('Session paused')}
-                        />
-                    ) : (
-                        <Play 
-                            size={32} 
-                            color="#373737"
-                            onClick={() => setSessionText(`Session #${currentSession}`)}
-                        />
-                    )}
-                </button>
+                { screen === 'timer' && (
+                    <button 
+                        className={`main--play-pause-button ${theme ? 'dark-theme' : ''}`}
+                        onClick={() => setIsRunning(prev => !prev)}
+                    >
+                        { isRunning ? (
+                            <Pause 
+                                size={32} 
+                                color="#373737"
+                                onClick={() => setSessionText('Session paused')}
+                            />
+                        ) : (
+                            <Play 
+                                size={32} 
+                                color="#373737"
+                                onClick={() => setSessionText(`Session #${currentSession}`)}
+                            />
+                        )}
+                    </button>
+                )}
+
+                { screen === 'subject' && (
+                    <button 
+                        className={`main--play-pause-button ${theme ? 'dark-theme' : ''}`}
+                        onClick={() => setScreen('start')}
+                    >
+                            <ArrowBigLeft
+                                size={32} 
+                                color="#373737"
+                                onClick={() => setSessionText(`Session #${currentSession}`)}
+                            />
+                    </button>
+                )}
+
 
 
                 {/* start and end button */}
                 <button 
-                    className="clickable start-button ibm-bold-36"
+                    className={`clickable start-button ibm-bold-36 ${theme ? 'dark-theme' : ''}`}
                     onClick={()=> {
                         if (screen === 'start') {
                             setScreen('subject')

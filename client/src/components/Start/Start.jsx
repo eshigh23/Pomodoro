@@ -1,10 +1,13 @@
 import './Start.css'
 import { useEffect, useState } from 'react'
+import { useContext } from 'react';
+import { UserContext } from '../../context/userContext';
 
 
 export default function Start({ options, setOptions }) {
 
     const [animate, setAnimate] = useState(false);
+    const { theme } = useContext(UserContext)
 
     useEffect(() => {
         // The 10ms delay ensures the browser registers the 100% 
@@ -21,7 +24,7 @@ export default function Start({ options, setOptions }) {
         {/* options */}
         <div className="main--option-wrapper ibm-bold-32">
             <input 
-                className="main--option-box light-pink-input ibm-bold-32"
+                className={`main--option-box light-pink-input ibm-bold-32 ${theme ? 'dark-theme' : ''}`}
                 type="number"
                 min={1}
                 max={1000}
@@ -36,7 +39,7 @@ export default function Start({ options, setOptions }) {
 
         <div className="main--option-wrapper ibm-bold-32">
             <input 
-                className="main--option-box light-pink-input ibm-bold-32"
+                className={`main--option-box light-pink-input ibm-bold-32 ${theme ? 'dark-theme' : ''}`}
                 type="number"
                 min={1}
                 max={1000}
@@ -50,7 +53,7 @@ export default function Start({ options, setOptions }) {
 
         <div className="main--option-wrapper ibm-bold-32">
             <input 
-                className="main--option-box light-pink-input ibm-bold-32"
+                className={`main--option-box light-pink-input ibm-bold-32 ${theme ? 'dark-theme' : ''}`}
                 type="number"
                 min={1}
                 max={24}

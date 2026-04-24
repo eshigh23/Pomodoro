@@ -42,6 +42,11 @@ export default function Audio() {
         setTheme('anything')
     }
 
+    const resetTheme = () => {
+        setTheme(null)
+        handleStopAudio()
+    }
+
 
     return (
         <div className={`audio-button ${isOpen ? "open" : "closed"}`}>
@@ -73,9 +78,8 @@ export default function Audio() {
 
                     <div className="clickable audio--icon" onClick={() => {
                         setSelectedIndex(1)
-                        handleStopAudio()
                     }}>
-                        <CircleSlash color="#373737" size={ICON_HEIGHT}/>
+                        <CircleSlash color="#373737" size={ICON_HEIGHT} onClick={resetTheme}/>
                     </div>
 
                     <div className="clickable audio--icon" onClick={() => handlePlayAudio(2)}>

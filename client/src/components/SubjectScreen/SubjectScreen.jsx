@@ -1,6 +1,10 @@
 import './SubjectScreen.css'
+import { useContext } from 'react'
+import { UserContext } from '../../context/userContext'
 
 export default function SubjectScreen({ sortedSubjects, setIsOverlay, sessions, setSessions}) {
+
+    const { theme } = useContext(UserContext)
 
     const handleSubjectChange = (sessionIndex, segmentIndex, newSubject) => {
         setSessions(prev => {
@@ -28,8 +32,8 @@ export default function SubjectScreen({ sortedSubjects, setIsOverlay, sessions, 
 
 
                      <select 
-                        className="main--select ibm-semibold-24
-                            main--subject-text light-pink-input"
+                        className={`main--select ibm-semibold-24
+                            main--subject-text light-pink-input ${theme ? 'dark-theme' : ''}`}
                         value={sessions[idx]}
                         onChange={(e) => {
                             if (e.target.value === 'newSubject') {

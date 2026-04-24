@@ -29,9 +29,7 @@ app.use('/auth', authRoutes)
 app.use('/user', userRoutes)
 app.use('/studySession', studySessionRoutes)
 
-app.get('/api/data', (req, res) => {
-  res.json({ message: "Hello from Node!" });
-});
+
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {

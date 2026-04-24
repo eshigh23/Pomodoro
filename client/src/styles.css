@@ -29,6 +29,13 @@
     text-transform: capitalize;
 }
 
+.ibm-medium-20 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 20px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
 /* navbar links */
 .ibm-medium-24 {
     font-family: 'IBM Plex Mono', monospace;
@@ -95,6 +102,12 @@
 .light-pink-input {
     background-color: #CD718E;
     border: 1px solid #FFCADB;
+}
+
+.light-pink-input.dark-theme {
+    background-color: #373737;
+    border: 1px solid white;
+    color: white;
 }
 
 .light-pink-button {
